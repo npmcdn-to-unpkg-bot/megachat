@@ -1,21 +1,18 @@
+const path = require('path')
 const SocketCluster = require('socketcluster').SocketCluster
 
 let options = {
+	origins: '*:*',
+	logLevel: 3,
 	rebootOnSignal: false,
 	workers: 1,
 	brokers: 1,
 	port: 8000,
 	wsEngine: 'uws',
 	appName: null,
-	workerController: __dirname + '/worker.js',
-	brokerController: __dirname + '/broker.js',
+	workerController: path.resolve(__dirname, '/worker.js'),
+	brokerController: path.resolve(__dirname, '/broker.js'),
 	socketChannelLimit: 1000,
-	clusterStateServerHost: null,
-	clusterStateServerPort: null,
-	clusterAuthKey: null,
-	clusterStateServerConnectTimeout: null,
-	clusterStateServerAckTimeout: null,
-	clusterStateServerReconnectRandomness: null,
 	crashWorkerOnError: true
 }
 
