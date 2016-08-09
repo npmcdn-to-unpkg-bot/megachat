@@ -1,11 +1,13 @@
-'use strict';
-const path = require('path');
+'use strict'
+const
+	path = require('path')
+
 module.exports = {
 	entry: './src/client/entry.js',
 	output: {
 		path: path.resolve(__dirname, 'public', 'js'),
 		publicPath: 'public/',
-		filename: 'bundle.js'
+		filename: 'webpack.bundle.js'
 	},
 	module: {
 		loaders: [{
@@ -16,8 +18,5 @@ module.exports = {
 				presets: ['es2015', 'react']
 			}
 		}]
-	},
-	devServer: {
-		contentBase: path.resolve(__dirname, 'public')
 	}
-};
+}
