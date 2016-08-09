@@ -1,6 +1,6 @@
 {
   "name": "megachat",
-  "description": "Highly scalable embeddable chat",
+  "description": "Highly scalable, easy embeddable chat",
   "version": "0.0.2",
   "author": "Mega <Aza.Noriega@gmail.com>",
   "dependencies": {
