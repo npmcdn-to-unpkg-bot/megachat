@@ -10,8 +10,8 @@ let options = {
 	port: 8000,
 	wsEngine: 'uws',
 	appName: null,
-	workerController: path.resolve(__dirname, '/worker.js'),
-	brokerController: path.resolve(__dirname, '/broker.js'),
+	workerController: path.resolve(__dirname, 'worker.js'),
+	brokerController: path.resolve(__dirname, 'broker.js'),
 	socketChannelLimit: 1000,
 	crashWorkerOnError: true
 }

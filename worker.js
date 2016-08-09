@@ -2,7 +2,9 @@
 const
 	path = require('path'),
 	express = require('express'),
-	serveStatic = require('serve-static')
+	serveStatic = require('serve-static'),
+	log4js = require('log4js'),
+	log = log4js.getLogger('Worker')
 
 module.exports.run = function (worker) {
 	console.log('   >> Worker PID:', process.pid)
