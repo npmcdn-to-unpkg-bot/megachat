@@ -13,3 +13,9 @@ const // logger
 	}
 
 log4js.configure(logOptions)
+
+const Config = {
+	root: '/home/mega/github/megachat'
+}
+
+module.exports = Config
