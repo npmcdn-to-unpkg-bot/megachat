@@ -1,33 +1,33 @@
 {
-  "name": "megachat",
-  "description": "Highly scalable, easy embeddable chat",
-  "version": "0.0.7",
-  "author": "Mega <Aza.Noriega@gmail.com>",
-  "dependencies": {
-    "bluebird": "^3.4.1",
-    "express": "4.x.x",
-    "log4js": "^0.6.38",
-    "sc-cluster-broker-client": "1.x.x",
-    "serve-static": "1.x.x",
-    "socketcluster": "5.x.x",
-    "socketcluster-client": "5.x.x"
-  },
-  "keywords": [
-    "chat",
-    "embed",
-    "embeddable",
-    "realtime",
-    "websocket",
-    "cluster",
-    "scalable"
-  ],
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/MegaGM/megachat.git"
-  },
-  "bugs": {
-    "url": "https://github.com/MegaGM/megachat/issues"
-  },
-  "homepage": "https://github.com/MegaGM/megachat#readme",
-  "readmeFilename": "README.md"
+	"name": "megachat",
+	"description": "Highly scalable, easy embeddable chat",
+	"version": "0.0.7",
+	"author": "Mega <Aza.Noriega@gmail.com>",
+	"dependencies": {
+		"bluebird": "^3.x.x",
+		"express": "4.x.x",
+		"log4js": "^0.x.x",
+		"sc-cluster-broker-client": "1.x.x",
+		"serve-static": "1.x.x",
+		"socketcluster": "5.x.x",
+		"socketcluster-client": "5.x.x"
+	},
+	"keywords": [
+		"chat",
+		"embed",
+		"embeddable",
+		"realtime",
+		"websocket",
+		"cluster",
+		"scalable"
+	],
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/MegaGM/megachat.git"
+	},
+	"bugs": {
+		"url": "https://github.com/MegaGM/megachat/issues"
+	},
+	"homepage": "https://github.com/MegaGM/megachat#readme",
+	"readmeFilename": "README.md"
 }

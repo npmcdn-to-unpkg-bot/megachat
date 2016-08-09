@@ -1,3 +1,8 @@
+'use strict'
+const
+	config = require('./config'),
+	log = require('log4js').getLogger('Worker')
+
 module.exports.run = function (broker) {
-	console.log('   >> Broker PID:', process.pid);
-};
+	log.debug('Broker PID:', process.pid)
+}

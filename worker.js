@@ -1,13 +1,14 @@
 'use strict'
 const
+	config = require('./config'),
+	log = require('log4js').getLogger('Worker')
+const
 	path = require('path'),
 	express = require('express'),
-	serveStatic = require('serve-static'),
-	log4js = require('log4js'),
-	log = log4js.getLogger('Worker')
+	serveStatic = require('serve-static')
 
 module.exports.run = function (worker) {
-	console.log('   >> Worker PID:', process.pid)
+	log.debug('Worker PID:', process.pid)
 
 	let
 		app = express(),
