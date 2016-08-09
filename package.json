@@ -1,7 +1,7 @@
 {
   "name": "megachat",
   "description": "Highly scalable, easy embeddable chat",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "author": "Mega <Aza.Noriega@gmail.com>",
   "dependencies": {
     "bluebird": "^3.x.x",
