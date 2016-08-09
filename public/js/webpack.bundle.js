@@ -55,8 +55,6 @@
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var React = window.React;
-	//import React, {Component} from 'react'
-	//import {render} from 'react-dom'
 
 	var dispatcher = new _flux.Dispatcher();
 
