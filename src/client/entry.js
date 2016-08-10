@@ -1,8 +1,8 @@
-const React = window.React
-import {Dispatcher} from 'flux'
+window.megachat = {}
+import websockets from './websockets'
 import Chat from './components/chat'
+
+import {Dispatcher} from 'flux'
 let dispatcher = new Dispatcher
 
-ReactDOM.render(< Chat / >, document.getElementById('main'))
-
-import connect from './connect'
+ReactDOM.render(< Chat / >, document.querySelector('#megachat'))

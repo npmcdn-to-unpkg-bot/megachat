@@ -1,4 +1,6 @@
-const React = window.React
+let React = window.React
+let socket = window.socket
+import Promise from 'bluebird'
 
 export default class Chat extends React.Component {
 
