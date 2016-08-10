@@ -52,6 +52,10 @@
 
 	var _chat2 = _interopRequireDefault(_chat);
 
+	var _connect = __webpack_require__(6);
+
+	var _connect2 = _interopRequireDefault(_connect);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var React = window.React;
@@ -581,6 +585,15 @@
 	}(React.Component);
 
 	exports.default = Chat;
+
+/***/ },
+/* 6 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	var socket = socketCluster.connect();
+	window.socket = socket;
 
 /***/ }
 /******/ ]);

@@ -1,19 +1,18 @@
 'use strict'
 const
-	EventEmitter = require('events')
+	path = require('path'),
+	flatten = require('flat'),
+	EventEmitter = require('events'),
+	actionsTree = require('require-all')({
+		dirname: path.resolve(__dirname, '../actions'),
+		recursive: true,
+	}),
+	actions = flatten(actionsTree)
 
-module.exports = sc => {
-	// noop
-	sc.on('connection', function (socket) {
-
-		socket.on('meow', data => {
-			// FIXME: debug
-			log.debug('meow event: ', data)
-			sc.exchange.publish('recieve', data)
-		})
-
-		socket.on('disconnect', () => {
-			console.log('socket disconnected')
+module.exports = scServer => {
+	scServer.on('connection', socket => {
+		Object.keys(actions).forEach(key => {
+			socket.on(key, actions[key].bind(null, socket, scServer))
 		})
 	})
 }

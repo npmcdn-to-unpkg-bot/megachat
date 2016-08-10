@@ -4,20 +4,24 @@ const
 	log = require('log4js').getLogger('Worker')
 const
 	express = require('express'),
-	middlewares = require('./middlewares')
+	middlewares = require('./middlewares'),
+	dispatcher = require('./dispatcher')
 
 module.exports.run = function (worker) {
 	log.debug('Worker PID:', process.pid)
 
-	let app = express()
+	let app = express(),
+		scServer = worker.scServer,
+		httpServer = worker.httpServer
 
 	// attach express and socketcluster middlewares
-	middlewares(app, worker.scServer)
+	middlewares.express(app)
+	middlewares.sc(scServer)
 
-	// attach socketcluster event handlers
-	dispatcher(worker.scServer)
+	// dispatch socketcluster events
+	dispatcher(scServer)
 
 	// let express to process http requests
-	worker.httpServer.on('request', app)
+	httpServer.on('request', app)
 
 }

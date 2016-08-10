@@ -3,5 +3,6 @@ import {Dispatcher} from 'flux'
 import Chat from './components/chat'
 let dispatcher = new Dispatcher
 
-ReactDOM.render(
-	<Chat/>, document.getElementById('main'))
+ReactDOM.render(< Chat / >, document.getElementById('main'))
+
+import connect from './connect'
