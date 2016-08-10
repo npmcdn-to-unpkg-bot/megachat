@@ -1,7 +1,7 @@
 {
   "name": "megachat",
   "description": "Highly scalable, easy embeddable chat",
-  "version": "0.0.17",
+  "version": "0.0.18",
   "author": "Mega <Aza.Noriega@gmail.com>",
   "scripts": {
     "webpack": "./node_modules/.bin/webpack -cw",
