@@ -250,19 +250,13 @@
 		_createClass(Chat, [{
 			key: 'componentDidMount',
 			value: function componentDidMount() {
-				chatStore.on('update', this.update.bind(this));
+				chatStore.on('update', this.setState.bind(this));
 				webapi.emit('channels.get', 'from chat component');
 			}
 		}, {
 			key: 'componentWillUnmount',
 			value: function componentWillUnmount() {
-				chatStore.removeListener('update', this.update.bind(this));
-			}
-		}, {
-			key: 'update',
-			value: function update(data) {
-				console.log('Chat => update', data);
-				this.setState(data);
+				chatStore.removeListener('update', this.setState.bind(this));
 			}
 		}, {
 			key: 'render',
@@ -271,7 +265,7 @@
 				if (!ts.channels) return React.createElement(
 					'div',
 					null,
-					'No channels'
+					'Preloader'
 				);
 
 				var chans = ts.channels.map(function (chan) {
@@ -326,9 +320,8 @@
 
 		_createClass(ChatStore, [{
 			key: 'channels.get',
-			value: function channelsGet(data) {
-				console.log('ChatStore => channels.get', data);
-				this.channels = data;
+			value: function channelsGet(channels) {
+				this.channels = channels;
 				this.emit('update', this);
 			}
 		}, {

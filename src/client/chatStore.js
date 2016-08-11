@@ -9,9 +9,8 @@ class ChatStore extends EventEmitter {
 		dispatcher.register(this.handleActions.bind(this))
 	}
 
-	['channels.get'](data) {
-		console.log('ChatStore => channels.get', data)
-		this.channels = data
+	['channels.get'](channels) {
+		this.channels = channels
 		this.emit('update', this)
 	}
 

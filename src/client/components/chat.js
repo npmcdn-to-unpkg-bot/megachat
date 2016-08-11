@@ -10,24 +10,19 @@ module.exports = class Chat extends React.Component {
 	}
 
 	componentDidMount() {
-		chatStore.on('update', this.update.bind(this))
+		chatStore.on('update', this.setState.bind(this))
 		webapi.emit('channels.get', 'from chat component')
 	}
 
 	componentWillUnmount() {
-		chatStore.removeListener('update', this.update.bind(this))
-	}
-
-	update(data) {
-		console.log('Chat => update', data)
-		this.setState(data)
+		chatStore.removeListener('update', this.setState.bind(this))
 	}
 
 	render() {
 		let ts = this.state
 		if (!ts.channels)
 			return (
-				<div>No channels</div>
+				<div>Preloader</div>
 			)
 
 		let chans = ts.channels.map(chan => {
