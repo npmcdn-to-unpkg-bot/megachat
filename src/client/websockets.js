@@ -1,26 +1,31 @@
 'use strict'
-let socket = socketCluster.connect()
-window.megachat.socket = socket
+let socket = window.megachat.socket
 
 // get channels list
 socket.on('channels.get', data => {
 	console.log('channels.get', data)
+		// dispatcher.dispatch('got list of channels')
 })
-socket.emit('channels.get')
+socket.emit('channels.get', 'gimme channels!')
 
 // get messages for current channel
 socket.on('messages.get', data => {
 	console.log('messages.get: ', data)
+		// dispatcher.dispatch('got list of messages')
 })
-socket.emit('messages.get', { channel: 'kittens', from: 0, to: 100 })
+socket.emit('messages.get', { channel: 'chan.kittens', from: 0, to: 100 })
 
 // subscribe to channels list
 socket
-	.subscribe('channels.kittens')
+	.subscribe('chan.kittens')
 	.watch(data => {
-		console.log('channels.kittens', data)
+		console.log('chan.kittens', data)
+			// dispatcher.dispatch('got new message or')
+			// dispatcher.dispatch('a message has been updated')
 	})
 
-// each watcher should invoke dispatcher.dispatch(channelName,data)
-
-// socket.publish('channels.kittens', { message: 'meow!' })
+// create new message
+socket.emit('messages.new', {
+	message: 'Hello there!',
+	channel: 'chan.kittens',
+})
