@@ -1,22 +1,23 @@
 'use strict'
 let React = window.React,
 	webapi = require('../webapi'),
-	dispatcher = require('./dispatcher'),
+	dispatcher = require('../dispatcher'),
 	chatStore = require('../chatStore')
 
 module.exports = class Chat extends React.Component {
 	constructor(props) {
 		super(props)
 		this.state = {}
+		this.setState = this.setState.bind(this)
 	}
 
 	componentDidMount() {
-		chatStore.on('update', this.setState.bind(this))
-		webapi.emit('channels.get', 'from chat component')
+		chatStore.on('update', this.setState)
+		chatStore.getChannelsList()
 	}
 
 	componentWillUnmount() {
-		chatStore.removeListener('update', this.setState.bind(this))
+		chatStore.removeListener('update', this.setState)
 	}
 
 	render() {

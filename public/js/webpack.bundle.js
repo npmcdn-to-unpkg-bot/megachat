@@ -65,7 +65,10 @@
 
 	var React = window.React,
 	    webapi = __webpack_require__(2),
-	    chatStore = __webpack_require__(8);
+	    dispatcher = __webpack_require__(3),
+	    chatStore = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"../chatStore\""); e.code = 'MODULE_NOT_FOUND'; throw e; }())),
+	    ChannelsList = __webpack_require__(10),
+	    MessagesList = __webpack_require__(11);
 
 	module.exports = function (_React$Component) {
 		_inherits(Chat, _React$Component);
@@ -76,19 +79,20 @@
 			var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Chat).call(this, props));
 
 			_this.state = {};
+			_this.setState = _this.setState.bind(_this);
 			return _this;
 		}
 
 		_createClass(Chat, [{
 			key: 'componentDidMount',
 			value: function componentDidMount() {
-				chatStore.on('update', this.setState.bind(this));
-				webapi.emit('channels.get', 'from chat component');
+				chatStore.on('update', this.setState);
+				chatStore.getChannelsList();
 			}
 		}, {
 			key: 'componentWillUnmount',
 			value: function componentWillUnmount() {
-				chatStore.removeListener('update', this.setState.bind(this));
+				chatStore.removeListener('update', this.setState);
 			}
 		}, {
 			key: 'render',
@@ -111,8 +115,9 @@
 				return React.createElement(
 					'div',
 					null,
-					'Chat component! ',
-					chans
+					'Chat component',
+					React.createElement(ChannelsList, null),
+					React.createElement(MessagesList, null)
 				);
 			}
 		}]);
@@ -139,6 +144,7 @@
 			this.socket = socketCluster.connect();
 			this.on = this.socket.on.bind(this.socket);
 			this.emit = this.socket.emit.bind(this.socket);
+			// this.dispatch = this.dispatch.bind(this)
 			this.listen();
 		}
 
@@ -643,7 +649,9 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(6)))
 
 /***/ },
-/* 8 */
+/* 8 */,
+/* 9 */,
+/* 10 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -656,348 +664,136 @@
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-	var webapi = __webpack_require__(2);
-	var dispatcher = __webpack_require__(3);
-	var EventEmitter = __webpack_require__(9);
+	var React = window.React,
+	    dispatcher = __webpack_require__(3),
+	    chatStore = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"../chatStore\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
 
-	var ChatStore = function (_EventEmitter) {
-		_inherits(ChatStore, _EventEmitter);
+	module.exports = function (_React$Component) {
+		_inherits(Chat, _React$Component);
 
-		function ChatStore() {
-			_classCallCheck(this, ChatStore);
+		function Chat(props) {
+			_classCallCheck(this, Chat);
 
-			var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(ChatStore).call(this));
+			var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Chat).call(this, props));
 
-			dispatcher.register(_this.handleActions.bind(_this));
+			_this.state = {};
+			_this.setState = _this.setState.bind(_this);
 			return _this;
 		}
 
-		_createClass(ChatStore, [{
-			key: 'channels.get',
-			value: function channelsGet(channels) {
-				this.channels = channels;
-				this.emit('update', this);
+		_createClass(Chat, [{
+			key: 'componentDidMount',
+			value: function componentDidMount() {
+				chatStore.on('update', this.setState);
+				chatStore.getChannelsList();
 			}
 		}, {
-			key: 'handleActions',
-			value: function handleActions(action) {
-				if (!this[action.type]) return;
-				this[action.type](action.data);
+			key: 'componentWillUnmount',
+			value: function componentWillUnmount() {
+				chatStore.removeListener('update', this.setState);
+			}
+		}, {
+			key: 'render',
+			value: function render() {
+				var ts = this.state;
+				if (!ts.channels) return React.createElement(
+					'div',
+					null,
+					'Preloader'
+				);
+
+				var chans = ts.channels.map(function (chan) {
+					return React.createElement(
+						'li',
+						{ key: chan.id },
+						chan.name
+					);
+				});
+
+				return React.createElement(
+					'div',
+					null,
+					'Chat component! ',
+					chans
+				);
 			}
 		}]);
 
-		return ChatStore;
-	}(EventEmitter);
-
-	module.exports = new ChatStore();
+		return Chat;
+	}(React.Component);
 
 /***/ },
-/* 9 */
-/***/ function(module, exports) {
+/* 11 */
+/***/ function(module, exports, __webpack_require__) {
 
-	// Copyright Joyent, Inc. and other Node contributors.
-	//
-	// Permission is hereby granted, free of charge, to any person obtaining a
-	// copy of this software and associated documentation files (the
-	// "Software"), to deal in the Software without restriction, including
-	// without limitation the rights to use, copy, modify, merge, publish,
-	// distribute, sublicense, and/or sell copies of the Software, and to permit
-	// persons to whom the Software is furnished to do so, subject to the
-	// following conditions:
-	//
-	// The above copyright notice and this permission notice shall be included
-	// in all copies or substantial portions of the Software.
-	//
-	// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
-	// OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-	// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
-	// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
-	// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
-	// OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
-	// USE OR OTHER DEALINGS IN THE SOFTWARE.
+	'use strict';
 
-	function EventEmitter() {
-	  this._events = this._events || {};
-	  this._maxListeners = this._maxListeners || undefined;
-	}
-	module.exports = EventEmitter;
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-	// Backwards-compat with node 0.10.x
-	EventEmitter.EventEmitter = EventEmitter;
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-	EventEmitter.prototype._events = undefined;
-	EventEmitter.prototype._maxListeners = undefined;
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
-	// By default EventEmitters will print a warning if more than 10 listeners are
-	// added to it. This is a useful default which helps finding memory leaks.
-	EventEmitter.defaultMaxListeners = 10;
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-	// Obviously not all Emitters should be limited to 10. This function allows
-	// that to be increased. Set to zero for unlimited.
-	EventEmitter.prototype.setMaxListeners = function(n) {
-	  if (!isNumber(n) || n < 0 || isNaN(n))
-	    throw TypeError('n must be a positive number');
-	  this._maxListeners = n;
-	  return this;
-	};
+	var React = window.React,
+	    webapi = __webpack_require__(2),
+	    dispatcher = __webpack_require__(3),
+	    chatStore = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"../chatStore\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
 
-	EventEmitter.prototype.emit = function(type) {
-	  var er, handler, len, args, i, listeners;
+	module.exports = function (_React$Component) {
+		_inherits(Chat, _React$Component);
 
-	  if (!this._events)
-	    this._events = {};
+		function Chat(props) {
+			_classCallCheck(this, Chat);
 
-	  // If there is no 'error' event listener then throw.
-	  if (type === 'error') {
-	    if (!this._events.error ||
-	        (isObject(this._events.error) && !this._events.error.length)) {
-	      er = arguments[1];
-	      if (er instanceof Error) {
-	        throw er; // Unhandled 'error' event
-	      } else {
-	        // At least give some kind of context to the user
-	        var err = new Error('Uncaught, unspecified "error" event. (' + er + ')');
-	        err.context = er;
-	        throw err;
-	      }
-	    }
-	  }
+			var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Chat).call(this, props));
 
-	  handler = this._events[type];
+			_this.state = {};
+			_this.setState = _this.setState.bind(_this);
+			return _this;
+		}
 
-	  if (isUndefined(handler))
-	    return false;
+		_createClass(Chat, [{
+			key: 'componentDidMount',
+			value: function componentDidMount() {
+				chatStore.on('update', this.setState);
+				chatStore.getChannelsList();
+			}
+		}, {
+			key: 'componentWillUnmount',
+			value: function componentWillUnmount() {
+				chatStore.removeListener('update', this.setState);
+			}
+		}, {
+			key: 'render',
+			value: function render() {
+				var ts = this.state;
+				if (!ts.channels) return React.createElement(
+					'div',
+					null,
+					'Preloader'
+				);
 
-	  if (isFunction(handler)) {
-	    switch (arguments.length) {
-	      // fast cases
-	      case 1:
-	        handler.call(this);
-	        break;
-	      case 2:
-	        handler.call(this, arguments[1]);
-	        break;
-	      case 3:
-	        handler.call(this, arguments[1], arguments[2]);
-	        break;
-	      // slower
-	      default:
-	        args = Array.prototype.slice.call(arguments, 1);
-	        handler.apply(this, args);
-	    }
-	  } else if (isObject(handler)) {
-	    args = Array.prototype.slice.call(arguments, 1);
-	    listeners = handler.slice();
-	    len = listeners.length;
-	    for (i = 0; i < len; i++)
-	      listeners[i].apply(this, args);
-	  }
+				var chans = ts.channels.map(function (chan) {
+					return React.createElement(
+						'li',
+						{ key: chan.id },
+						chan.name
+					);
+				});
 
-	  return true;
-	};
+				return React.createElement(
+					'div',
+					null,
+					'Chat component! ',
+					chans
+				);
+			}
+		}]);
 
-	EventEmitter.prototype.addListener = function(type, listener) {
-	  var m;
-
-	  if (!isFunction(listener))
-	    throw TypeError('listener must be a function');
-
-	  if (!this._events)
-	    this._events = {};
-
-	  // To avoid recursion in the case that type === "newListener"! Before
-	  // adding it to the listeners, first emit "newListener".
-	  if (this._events.newListener)
-	    this.emit('newListener', type,
-	              isFunction(listener.listener) ?
-	              listener.listener : listener);
-
-	  if (!this._events[type])
-	    // Optimize the case of one listener. Don't need the extra array object.
-	    this._events[type] = listener;
-	  else if (isObject(this._events[type]))
-	    // If we've already got an array, just append.
-	    this._events[type].push(listener);
-	  else
-	    // Adding the second element, need to change to array.
-	    this._events[type] = [this._events[type], listener];
-
-	  // Check for listener leak
-	  if (isObject(this._events[type]) && !this._events[type].warned) {
-	    if (!isUndefined(this._maxListeners)) {
-	      m = this._maxListeners;
-	    } else {
-	      m = EventEmitter.defaultMaxListeners;
-	    }
-
-	    if (m && m > 0 && this._events[type].length > m) {
-	      this._events[type].warned = true;
-	      console.error('(node) warning: possible EventEmitter memory ' +
-	                    'leak detected. %d listeners added. ' +
-	                    'Use emitter.setMaxListeners() to increase limit.',
-	                    this._events[type].length);
-	      if (typeof console.trace === 'function') {
-	        // not supported in IE 10
-	        console.trace();
-	      }
-	    }
-	  }
-
-	  return this;
-	};
-
-	EventEmitter.prototype.on = EventEmitter.prototype.addListener;
-
-	EventEmitter.prototype.once = function(type, listener) {
-	  if (!isFunction(listener))
-	    throw TypeError('listener must be a function');
-
-	  var fired = false;
-
-	  function g() {
-	    this.removeListener(type, g);
-
-	    if (!fired) {
-	      fired = true;
-	      listener.apply(this, arguments);
-	    }
-	  }
-
-	  g.listener = listener;
-	  this.on(type, g);
-
-	  return this;
-	};
-
-	// emits a 'removeListener' event iff the listener was removed
-	EventEmitter.prototype.removeListener = function(type, listener) {
-	  var list, position, length, i;
-
-	  if (!isFunction(listener))
-	    throw TypeError('listener must be a function');
-
-	  if (!this._events || !this._events[type])
-	    return this;
-
-	  list = this._events[type];
-	  length = list.length;
-	  position = -1;
-
-	  if (list === listener ||
-	      (isFunction(list.listener) && list.listener === listener)) {
-	    delete this._events[type];
-	    if (this._events.removeListener)
-	      this.emit('removeListener', type, listener);
-
-	  } else if (isObject(list)) {
-	    for (i = length; i-- > 0;) {
-	      if (list[i] === listener ||
-	          (list[i].listener && list[i].listener === listener)) {
-	        position = i;
-	        break;
-	      }
-	    }
-
-	    if (position < 0)
-	      return this;
-
-	    if (list.length === 1) {
-	      list.length = 0;
-	      delete this._events[type];
-	    } else {
-	      list.splice(position, 1);
-	    }
-
-	    if (this._events.removeListener)
-	      this.emit('removeListener', type, listener);
-	  }
-
-	  return this;
-	};
-
-	EventEmitter.prototype.removeAllListeners = function(type) {
-	  var key, listeners;
-
-	  if (!this._events)
-	    return this;
-
-	  // not listening for removeListener, no need to emit
-	  if (!this._events.removeListener) {
-	    if (arguments.length === 0)
-	      this._events = {};
-	    else if (this._events[type])
-	      delete this._events[type];
-	    return this;
-	  }
-
-	  // emit removeListener for all listeners on all events
-	  if (arguments.length === 0) {
-	    for (key in this._events) {
-	      if (key === 'removeListener') continue;
-	      this.removeAllListeners(key);
-	    }
-	    this.removeAllListeners('removeListener');
-	    this._events = {};
-	    return this;
-	  }
-
-	  listeners = this._events[type];
-
-	  if (isFunction(listeners)) {
-	    this.removeListener(type, listeners);
-	  } else if (listeners) {
-	    // LIFO order
-	    while (listeners.length)
-	      this.removeListener(type, listeners[listeners.length - 1]);
-	  }
-	  delete this._events[type];
-
-	  return this;
-	};
-
-	EventEmitter.prototype.listeners = function(type) {
-	  var ret;
-	  if (!this._events || !this._events[type])
-	    ret = [];
-	  else if (isFunction(this._events[type]))
-	    ret = [this._events[type]];
-	  else
-	    ret = this._events[type].slice();
-	  return ret;
-	};
-
-	EventEmitter.prototype.listenerCount = function(type) {
-	  if (this._events) {
-	    var evlistener = this._events[type];
-
-	    if (isFunction(evlistener))
-	      return 1;
-	    else if (evlistener)
-	      return evlistener.length;
-	  }
-	  return 0;
-	};
-
-	EventEmitter.listenerCount = function(emitter, type) {
-	  return emitter.listenerCount(type);
-	};
-
-	function isFunction(arg) {
-	  return typeof arg === 'function';
-	}
-
-	function isNumber(arg) {
-	  return typeof arg === 'number';
-	}
-
-	function isObject(arg) {
-	  return typeof arg === 'object' && arg !== null;
-	}
-
-	function isUndefined(arg) {
-	  return arg === void 0;
-	}
-
+		return Chat;
+	}(React.Component);
 
 /***/ }
 /******/ ]);

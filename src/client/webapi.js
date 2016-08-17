@@ -6,6 +6,7 @@ class WebApi {
 		this.socket = socketCluster.connect()
 		this.on = this.socket.on.bind(this.socket)
 		this.emit = this.socket.emit.bind(this.socket)
+		// this.dispatch = this.dispatch.bind(this)
 		this.listen()
 	}
 

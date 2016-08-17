@@ -15,8 +15,12 @@ class ChatStore extends EventEmitter {
 	}
 
 	handleActions(action) {
-		if (!this[action.type]) return
+		if (!this[action.type]) return console.log('ChatStore => ', action, ' is not implemented yet')
 		this[action.type](action.data)
+	}
+
+	getChannelsList() {
+		webapi.emit('channels.get', 'from chat component')
 	}
 }
 
