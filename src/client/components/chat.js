@@ -1,6 +1,7 @@
 'use strict'
 let React = window.React,
 	webapi = require('../webapi'),
+	dispatcher = require('./dispatcher'),
 	chatStore = require('../chatStore')
 
 module.exports = class Chat extends React.Component {
